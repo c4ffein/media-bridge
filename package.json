@@ -5,7 +5,7 @@
   "scripts": {
     "start": "bun run server.ts",
     "setup": "bash setup_pulse.sh",
-    "test-pw": "bun run test-pipewire.ts"
+    "test-pw": "bun run diagnostic/test-pipewire.ts"
   },
   "devDependencies": {
     "@types/bun": "latest"

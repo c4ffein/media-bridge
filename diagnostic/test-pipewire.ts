@@ -1,3 +1,15 @@
+/**
+ * PipeWire Loopback Diagnostic
+ *
+ * Full audio setup diagnostic vibed with Claude - helped pinpoint the actual
+ * problem with loopback connectivity. Kept around just in case.
+ *
+ * Tests that audio played to browser_speaker_sink actually arrives at
+ * browser_speaker_source by generating a 440Hz tone and recording simultaneously.
+ *
+ * Run: make test
+ */
+
 import { spawn } from "bun";
 
 const SAMPLE_RATE = 48000;
