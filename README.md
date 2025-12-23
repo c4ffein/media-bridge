@@ -1,6 +1,6 @@
-# Media Bridge
+# media-bridge
 
-Virtual audio devices over WebSocket. Stream audio between a browser and a headless Linux server.
+KISS virtual audio devices over WebSocket. Stream audio between a browser and a headless Linux server.
 
 Vibe coded by Claude, nudged toward the right debugging path by an actual human.  
 Long term I want to ensure this can work in Docker containers, I use them to let Claude do what they want, but recently I needed a fast way to both work with the audio and keep this level of security.
