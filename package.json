@@ -1,0 +1,13 @@
+{
+  "name": "media-bridge",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "bun run server.ts",
+    "setup": "bash setup_pulse.sh",
+    "test-pw": "bun run test-pipewire.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
