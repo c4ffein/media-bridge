@@ -20,11 +20,11 @@ console.log("Testing PipeWire loopback connectivity...\n");
 // Test: Play to browser_speaker_sink AND record from browser_speaker_source simultaneously
 console.log("=== Test: Loopback (play to sink, record from source) ===");
 
-// Start recording from the source (try ID 37 = Browser Speaker Source)
+// Start recording from the source
 const recorder = spawn({
   cmd: [
     "pw-record",
-    "--target=37",
+    "--target=browser_speaker_source",
     `--rate=${SAMPLE_RATE}`,
     `--channels=${CHANNELS}`,
     "--format=s16",
@@ -61,11 +61,11 @@ let recordBytes = 0;
 // Wait a moment for recorder to connect, then play to the sink
 await Bun.sleep(500);
 
-console.log("[pw-play] Playing 440Hz tone to Browser Speaker Sink (ID 38)...");
+console.log("[pw-play] Playing 440Hz tone to browser_speaker_sink...");
 const player = spawn({
   cmd: [
     "pw-play",
-    "--target=38",
+    "--target=browser_speaker_sink",
     `--rate=${SAMPLE_RATE}`,
     `--channels=${CHANNELS}`,
     "--format=s16",
