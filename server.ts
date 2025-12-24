@@ -43,7 +43,9 @@ function startCapture(client: AudioClient, ws: any) {
         if (done) break;
         console.log("[pw-record stderr]", decoder.decode(value));
       }
-    } catch (e) {}
+    } catch (e) {
+      console.error("[pw-record] stderr reader error:", e);
+    }
   })();
 
   // Monitor process exit
@@ -112,7 +114,9 @@ function startPlayback(client: AudioClient) {
         if (done) break;
         console.log("[pw-play stderr]", decoder.decode(value));
       }
-    } catch (e) {}
+    } catch (e) {
+      console.error("[pw-play] stderr reader error:", e);
+    }
   })();
 
   // Monitor process exit
@@ -164,11 +168,25 @@ const server = Bun.serve({
 
     message(ws, data) {
       const client = clients.get(ws);
-      // Log incoming audio from browser
-      if (data instanceof Buffer || data instanceof ArrayBuffer) {
-        const size = data instanceof Buffer ? data.length : data.byteLength;
-        console.log(`[ws] Received ${size} bytes from browser`);
+
+      // Input validation
+      if (!(data instanceof Buffer) && !(data instanceof ArrayBuffer)) {
+        console.warn("[ws] Received non-binary data, ignoring");
+        return;
       }
+
+      const size = data instanceof Buffer ? data.length : data.byteLength;
+
+      // Reject oversized chunks (max 1MB per message)
+      const MAX_CHUNK_SIZE = 1024 * 1024;
+      if (size > MAX_CHUNK_SIZE) {
+        console.warn(`[ws] Chunk too large (${size} bytes), ignoring`);
+        return;
+      }
+
+      // Log incoming audio from browser
+      console.log(`[ws] Received ${size} bytes from browser`);
+
       if (client?.pacat && data instanceof Buffer) {
         client.pacat.stdin.write(data);
       }
@@ -189,7 +207,7 @@ const server = Bun.serve({
 console.log(`
 🎵 Media Bridge running on http://localhost:${PORT}
 
-Make sure you've run: ./setup_pulse.sh
+Make sure you've run: make setup
 
 Using PipeWire native tools (pw-record/pw-play)
 
